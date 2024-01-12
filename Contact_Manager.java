@@ -40,7 +40,7 @@ public class Contact_Manager {
                     // searchContact();
                     break;
                 case 4:
-                    // deleteContact();
+                    deleteContact();
                     break;
                 case 5:
                     exit = true;
@@ -56,95 +56,6 @@ public class Contact_Manager {
         scanner.close();
     }
 
-    // public void addContact() {
-    // System.out.println("--- Add Contact---");
-    // System.out.println("Enter Name");
-    // String Name = scanner.nextLine();
-    // System.out.println("Enter Email:");
-    // String Email = scanner.nextLine();
-    // System.out.println("Enter phone No");
-    // String PhoneNo = scanner.nextLine();
-    // Contact contact = new Contact(Name, Email, PhoneNo);
-    // //contacts.add(contact);
-
-    // // Insert data into the database
-    // try {
-    // // SQL query to insert data
-    // String insertQuery = "INSERT INTO data (Name, Email, PhoneNo) VALUES (?, ?,
-    // ?)";
-
-    // // PreparedStatement preparedStatement =
-    // connection.prepareStatement(insertQuery);
-    // try (PreparedStatement preparedStatement =
-    // connection.prepareStatement(insertQuery)) {
-    // // Set values for the parameters in the prepared statement
-    // preparedStatement.setString(1, Name);
-    // preparedStatement.setString(2, Email);
-    // preparedStatement.setString(3, PhoneNo);
-
-    // // Execute the insert query
-    // int rowsAffected = preparedStatement.executeUpdate();
-
-    // if (rowsAffected > 0) {
-    // System.out.println("Data inserted successfully!");
-    // } else {
-    // System.out.println("Failed to insert data!");
-    // }
-    // }catch(SQLException e){
-    // e.printStackTrace();
-
-    // }
-
-    // System.out.println("Contact added successfully");
-
-    // }
-
-    // // private void viewContact() {
-    // // System.out.println("---View Contacts---");
-    // // if (contacts.isEmpty()) {
-    // // System.out.println("No contacts available");
-
-    // // } else {
-    // // for (Contact contact : contacts) {
-    // // System.out.println(contact);
-    // // }
-    // // }
-    // // }
-
-    // // private void searchContact() {
-    // // System.out.println("----- Search Contact -----");
-    // // System.out.print("Enter name to search: ");
-    // // String searchName = scanner.nextLine();
-    // // boolean found = false;
-
-    // // for (Contact contact : contacts) {
-    // // if (contact.getName().equalsIgnoreCase(searchName)) {
-    // // System.out.println("Contact found: " + contact);
-    // // found = true;
-    // // break;
-    // // }
-    // // }
-
-    // // if (!found) {
-    // // System.out.println("Contact not found.");
-    // // }
-    // // }
-
-    // // private void deleteContact() {
-    // // System.out.println("----- Delete Contact -----");
-    // // System.out.print("Enter name to delete: ");
-    // // String deleteName = scanner.nextLine();
-    // // boolean removed = contacts.removeIf(contact ->
-    // contact.getName().equalsIgnoreCase(deleteName));
-
-    // // if (removed) {
-    // // System.out.println("Contact deleted successfully.");
-    // // } else {
-    // // System.out.println("Contact not found.");
-    // // }
-
-    // }
-
     public void addContact() {
         System.out.println("--- Add Contact---");
         System.out.println("Enter Name");
@@ -153,12 +64,7 @@ public class Contact_Manager {
         String Email = scanner.nextLine();
         System.out.println("Enter phone No");
         String PhoneNo = scanner.nextLine();
-        // Contact contact = new Contact(Name, Email, PhoneNo);
-        // contacts.add(contact);
-
-        // SQL query to insert data
-        // String insertQuery = "INSERT INTO data (Name, Email, PhoneNo) VALUES (?, ?,
-        // ?)";
+        
         String insertQuery = "INSERT INTO data (Name,Email,PhoneNo) VALUES (?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -179,11 +85,28 @@ public class Contact_Manager {
             e.printStackTrace();
         }
 
-        // } catch (SQLException e) {
-        // System.out.println("Connection to the database failed!");
-        // e.printStackTrace();
-        // }
+    public void deleteContact() {
+        System.out.println("--- Delete Contact ---");
+        System.out.println("Enter Name to delete:");
+        String nameToDelete = scanner.nextLine();
 
+        String deleteQuery = "DELETE FROM data WHERE Name = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+            // Set the value for the parameter in the prepared statement
+            preparedStatement.setString(1, nameToDelete);
+
+            // Execute the delete query
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Data deleted successfully!");
+            } else {
+                System.out.println("No data found for the given name. Nothing deleted.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

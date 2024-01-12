@@ -10,6 +10,8 @@ public class DatabaseConnection {
         if (connection == null) {
             try {
                 connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/contactdata", "root", "");
+
+                System.out.println("\n");
                 System.out.println("------------------Connected To The DataBase------------------");
             } catch (SQLException e) {
                 e.printStackTrace();
