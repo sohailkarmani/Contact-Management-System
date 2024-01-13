@@ -1,6 +1,7 @@
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -34,7 +35,7 @@ public class Contact_Manager {
                     addContact();
                     break;
                 case 2:
-                    // viewContact();
+                    viewContact();
                     break;
                 case 3:
                     // searchContact();
@@ -109,4 +110,26 @@ public class Contact_Manager {
         }
     }
 
+    public void viewContact() {
+        System.out.println("--- Retrieve Contacts ---");
+
+        String selectQuery = "SELECT Name, Email, PhoneNo FROM data";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+            // Execute the select query
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Process the result set
+            while (resultSet.next()) {
+                String name = resultSet.getString("Name");
+                String email = resultSet.getString("Email");
+                String phoneNo = resultSet.getString("PhoneNo");
+
+                System.out.println("Name: " + name + ", Email: " + email + ", Phone No: " + phoneNo);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
