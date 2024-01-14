@@ -38,7 +38,7 @@ public class Contact_Manager {
                     viewContact();
                     break;
                 case 3:
-                    // searchContact();
+                     searchContact();
                     break;
                 case 4:
                     deleteContact();
@@ -83,7 +83,7 @@ public class Contact_Manager {
                 System.out.println("Failed to insert data!");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace();}
         }
 
     public void deleteContact() {
@@ -131,5 +131,39 @@ public class Contact_Manager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    
+
     }
+
+    public void searchContact() {
+        System.out.println("--- Search Contact ---");
+        System.out.println("Enter Name to search:");
+        String searchName = scanner.nextLine();
+    
+        String selectQuery = "SELECT * FROM data WHERE Name = ?";
+    
+        try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+            // Set the value for the parameter in the prepared statement
+            preparedStatement.setString(1, searchName);
+    
+            // Execute the select query
+            ResultSet resultSet = preparedStatement.executeQuery();
+    
+            if (resultSet.next()) {
+                // Display the contact details if found
+                System.out.println("Contact found:");
+                System.out.println("Name: " + resultSet.getString("Name"));
+                System.out.println("Email: " + resultSet.getString("Email"));
+                System.out.println("Phone No: " + resultSet.getString("PhoneNo"));
+            } else {
+                System.out.println("Contact not found!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+    }
+
+    
+    
 }
